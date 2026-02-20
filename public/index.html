@@ -47,8 +47,7 @@
       linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
     background-size: 60px 60px;
     animation: gridMove 20s linear infinite;
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
   }
 
   body::after {
@@ -58,53 +57,35 @@
     width: 200%; height: 200%;
     background: radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.08) 0%, transparent 50%),
                 radial-gradient(ellipse at 70% 80%, rgba(0,229,255,0.06) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
   }
 
-  @keyframes gridMove {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(60px); }
-  }
+  @keyframes gridMove { 0% { transform: translateY(0); } 100% { transform: translateY(60px); } }
 
   .wrapper {
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: 640px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    position: relative; z-index: 1;
+    width: 100%; max-width: 640px;
+    display: flex; flex-direction: column; gap: 16px;
   }
 
   .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 4px;
+    display: flex; align-items: center;
+    justify-content: space-between; padding: 0 4px;
   }
 
   .logo {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 3px;
-    text-transform: uppercase;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--muted); letter-spacing: 3px; text-transform: uppercase;
   }
 
   .status-dot {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 1px;
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 10px;
+    color: var(--muted); letter-spacing: 1px;
   }
 
   .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
+    width: 6px; height: 6px; border-radius: 50%;
     background: var(--success);
     animation: pulse 2s ease-in-out infinite;
   }
@@ -118,20 +99,15 @@
 
   .main-card {
     background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 48px 40px;
-    position: relative;
-    overflow: hidden;
+    border: 1px solid var(--border); border-radius: 2px;
+    padding: 48px 40px; position: relative; overflow: hidden;
     box-shadow: 0 0 0 1px rgba(0,229,255,0.05), inset 0 1px 0 rgba(255,255,255,0.04);
     transition: border-color 0.3s;
   }
 
   .main-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
     background: linear-gradient(90deg, transparent, var(--accent), transparent);
     opacity: 0.6;
   }
@@ -139,70 +115,42 @@
   .main-card.loading { border-color: rgba(245,158,11,0.3); }
   .main-card.error-state { border-color: rgba(239,68,68,0.3); }
 
-  .corner {
-    position: absolute;
-    width: 16px; height: 16px;
-    border-color: var(--accent);
-    border-style: solid;
-    opacity: 0.4;
-  }
+  .corner { position: absolute; width: 16px; height: 16px; border-color: var(--accent); border-style: solid; opacity: 0.4; }
   .corner.tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
   .corner.tr { top: 8px; right: 8px; border-width: 1px 1px 0 0; }
   .corner.bl { bottom: 8px; left: 8px; border-width: 0 0 1px 1px; }
   .corner.br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
 
   .currency-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 24px;
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 4px; color: var(--muted);
+    text-transform: uppercase; margin-bottom: 24px;
   }
 
   .rate-display {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-    min-height: 80px;
+    display: flex; align-items: center;
+    gap: 12px; margin-bottom: 8px; min-height: 80px;
   }
 
   .rate-value {
-    font-family: var(--mono);
-    font-size: 64px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: -2px;
-    line-height: 1;
+    font-family: var(--mono); font-size: 64px; font-weight: 700;
+    color: var(--accent); letter-spacing: -2px; line-height: 1;
     text-shadow: 0 0 40px rgba(0,229,255,0.3);
-    transition: all 0.5s ease;
-    word-break: break-all;
+    transition: all 0.5s ease; word-break: break-all;
   }
 
-  .rate-value.updating {
-    opacity: 0.3;
-    transform: scale(0.98);
-  }
+  .rate-value.updating { opacity: 0.3; transform: scale(0.98); }
 
   .rate-currency {
-    font-family: var(--sans);
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 2px;
-    flex-shrink: 0;
+    font-family: var(--sans); font-size: 18px; font-weight: 600;
+    color: var(--muted); letter-spacing: 2px; flex-shrink: 0;
   }
 
   .rate-sub {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    margin-bottom: 32px;
-    min-height: 18px;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--muted); letter-spacing: 1px;
+    margin-bottom: 32px; min-height: 18px;
   }
-
   .rate-sub .val { color: var(--gold); }
   .rate-sub .up { color: var(--success); }
   .rate-sub .down { color: var(--error); }
@@ -210,400 +158,149 @@
   .skeleton {
     width: 280px; height: 64px;
     background: linear-gradient(90deg, var(--border) 25%, var(--surface) 50%, var(--border) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 2px;
+    background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 2px;
   }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
+  .divider { border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 24px 0; }
 
-  .divider {
-    border: none; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--border), transparent);
-    margin: 24px 0;
-  }
-
-  .meta-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .meta-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .meta-key {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .meta-val {
-    font-family: var(--mono);
-    font-size: 14px;
-    color: var(--text);
-  }
+  .meta-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-key { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+  .meta-val { font-family: var(--mono); font-size: 14px; color: var(--text); }
 
   .refresh-btn {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    padding: 10px 24px;
-    cursor: pointer;
-    border-radius: 1px;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-    flex-shrink: 0;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 2px;
+    text-transform: uppercase; background: transparent;
+    border: 1px solid var(--accent); color: var(--accent);
+    padding: 10px 24px; cursor: pointer; border-radius: 1px;
+    transition: all 0.2s; position: relative; overflow: hidden; flex-shrink: 0;
   }
-
-  .refresh-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--accent);
-    transform: translateX(-100%);
-    transition: transform 0.2s;
-    z-index: 0;
-  }
-
+  .refresh-btn::before { content: ''; position: absolute; inset: 0; background: var(--accent); transform: translateX(-100%); transition: transform 0.2s; z-index: 0; }
   .refresh-btn:hover::before { transform: translateX(0); }
   .refresh-btn:hover { color: var(--bg); }
   .refresh-btn span { position: relative; z-index: 1; }
   .refresh-btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .refresh-btn:disabled::before { display: none; }
 
-  .spin {
-    display: inline-block;
-    animation: spinAnim 0.8s linear infinite;
-  }
+  .spin { display: inline-block; animation: spinAnim 0.8s linear infinite; }
   @keyframes spinAnim { to { transform: rotate(360deg); } }
 
-  .progress-wrap {
-    background: var(--border);
-    height: 2px;
-    overflow: hidden;
-  }
-
-  .progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent2), var(--accent));
-    transition: width 1s linear;
-    box-shadow: 0 0 8px rgba(0,229,255,0.5);
-  }
+  .progress-wrap { background: var(--border); height: 2px; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 1s linear; box-shadow: 0 0 8px rgba(0,229,255,0.5); }
 
   .error-box {
-    background: rgba(239,68,68,0.08);
-    border: 1px solid rgba(239,68,68,0.3);
-    border-radius: 2px;
-    padding: 16px 20px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--error);
-    letter-spacing: 0.5px;
-    display: none;
-    align-items: center;
-    gap: 12px;
+    background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 2px; padding: 16px 20px;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--error); letter-spacing: 0.5px;
+    display: none; align-items: center; gap: 12px;
   }
   .error-box.visible { display: flex; }
 
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .info-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 20px;
-    transition: border-color 0.3s;
-  }
-
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .info-card { background: var(--card); border: 1px solid var(--border); border-radius: 2px; padding: 20px; transition: border-color 0.3s; }
   .info-card:hover { border-color: rgba(0,229,255,0.3); }
   .info-card-icon { font-size: 20px; margin-bottom: 8px; }
-
-  .info-card-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-
-  .info-card-val {
-    font-family: var(--sans);
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--text);
-  }
+  .info-card-label { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+  .info-card-val { font-family: var(--sans); font-size: 16px; font-weight: 600; color: var(--text); }
 
   /* ── BANKS ── */
   .banks-section {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 24px;
-    position: relative;
-    overflow: hidden;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 2px; padding: 24px; position: relative; overflow: hidden;
   }
-
   .banks-section::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent2), transparent);
-    opacity: 0.5;
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent2), transparent); opacity: 0.5;
   }
 
   .section-title {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 3px;
+    color: var(--muted); text-transform: uppercase;
+    margin-bottom: 16px; padding-bottom: 12px;
     border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; justify-content: space-between; align-items: center;
   }
-
   .section-title .badge {
-    font-family: var(--mono);
-    font-size: 9px;
-    background: rgba(124,58,237,0.15);
-    border: 1px solid rgba(124,58,237,0.3);
-    color: var(--accent2);
-    padding: 3px 10px;
-    border-radius: 1px;
-    letter-spacing: 1px;
+    font-family: var(--mono); font-size: 9px;
+    background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+    color: var(--accent2); padding: 3px 10px; border-radius: 1px; letter-spacing: 1px;
   }
 
-  .bank-source {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--muted);
-    margin-bottom: 16px;
-    letter-spacing: 0.5px;
-  }
-
-  .bank-source a {
-    color: var(--accent);
-    text-decoration: none;
-    opacity: 0.8;
+  .bank-date-info {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--muted); margin-bottom: 16px; letter-spacing: 0.5px;
   }
 
   .search-wrap { margin-bottom: 16px; }
-
   .search-input {
-    width: 100%;
-    padding: 10px 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 1px;
-    outline: none;
-    transition: border-color 0.3s;
+    width: 100%; padding: 10px 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 2px; color: var(--text);
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 1px; outline: none; transition: border-color 0.3s;
   }
-
   .search-input:focus { border-color: var(--accent); }
   .search-input::placeholder { color: var(--muted); opacity: 0.6; }
 
-  .sort-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-  }
-
+  .sort-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
   .sort-btn {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 6px 14px;
-    cursor: pointer;
-    border-radius: 1px;
-    transition: all 0.2s;
+    font-family: var(--mono); font-size: 9px; letter-spacing: 2px;
+    text-transform: uppercase; background: transparent;
+    border: 1px solid var(--border); color: var(--muted);
+    padding: 6px 14px; cursor: pointer; border-radius: 1px; transition: all 0.2s;
   }
-
   .sort-btn:hover { border-color: var(--accent); color: var(--accent); }
   .sort-btn.active { background: rgba(0,229,255,0.1); border-color: var(--accent); color: var(--accent); }
 
   .bank-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 4px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid var(--border); margin-bottom: 4px;
   }
+  .bank-header span { font-family: var(--mono); font-size: 9px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .bank-header .hdr-rates { display: flex; gap: 24px; }
+  .bank-header .hdr-rates span { min-width: 80px; text-align: right; }
 
-  .bank-header span {
-    font-family: var(--mono);
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-
-  .bank-header .hdr-rates {
-    display: flex;
-    gap: 24px;
-  }
-
-  .bank-header .hdr-rates span {
-    min-width: 80px;
-    text-align: right;
-  }
-
-  .bank-list {
-    display: flex;
-    flex-direction: column;
-  }
+  .bank-list { display: flex; flex-direction: column; }
 
   .bank-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(30,45,69,0.4);
-    transition: all 0.2s;
-    animation: fadeIn 0.3s ease;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid rgba(30,45,69,0.4);
+    transition: all 0.2s; animation: fadeIn 0.3s ease;
   }
-
   .bank-item:last-child { border-bottom: none; }
-
   .bank-item:hover {
     background: rgba(0,229,255,0.02);
-    padding-left: 8px;
-    padding-right: 8px;
-    margin: 0 -8px;
-    border-radius: 2px;
+    padding-left: 8px; padding-right: 8px;
+    margin: 0 -8px; border-radius: 2px;
   }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .bank-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex: 1;
-    min-width: 0;
-  }
-
+  .bank-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
   .bank-rank {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--muted);
-    width: 22px; height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    flex-shrink: 0;
+    font-family: var(--mono); font-size: 10px; color: var(--muted);
+    width: 22px; height: 22px; display: flex; align-items: center;
+    justify-content: center; border: 1px solid var(--border);
+    border-radius: 2px; flex-shrink: 0;
   }
-
-  .bank-rank.top {
-    border-color: var(--gold);
-    color: var(--gold);
-    background: rgba(245,158,11,0.08);
-  }
-
-  .bank-name {
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .bank-rates {
-    display: flex;
-    gap: 24px;
-    flex-shrink: 0;
-  }
-
-  .bank-rate {
-    min-width: 80px;
-    text-align: right;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-
+  .bank-rank.top { border-color: var(--gold); color: var(--gold); background: rgba(245,158,11,0.08); }
+  .bank-name { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bank-rates { display: flex; gap: 24px; flex-shrink: 0; }
+  .bank-rate { min-width: 80px; text-align: right; font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: -0.5px; }
   .bank-rate.buy { color: var(--buy-color); }
   .bank-rate.sell { color: var(--sell-color); }
   .bank-rate.none { color: var(--muted); opacity: 0.4; }
 
-  .bank-skeleton {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(30,45,69,0.3);
-  }
-
-  .skel-bar {
-    height: 14px;
-    background: linear-gradient(90deg, var(--border) 25%, var(--surface) 50%, var(--border) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 2px;
-  }
-
+  .bank-skeleton { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(30,45,69,0.3); }
+  .skel-bar { height: 14px; background: linear-gradient(90deg, var(--border) 25%, var(--surface) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 2px; }
   .skel-name { width: 40%; }
   .skel-rate { width: 18%; }
 
-  .no-results {
-    text-align: center;
-    padding: 32px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 1px;
-  }
+  .no-results { text-align: center; padding: 32px; font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 1px; line-height: 1.8; }
 
-  .footer {
-    text-align: center;
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    padding: 8px 0;
-  }
-
+  .footer { text-align: center; font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 1px; padding: 8px 0; }
   .footer a { color: var(--accent); text-decoration: none; opacity: 0.7; }
 
   @media (max-width: 480px) {
@@ -636,17 +333,12 @@
     <div class="corner tr"></div>
     <div class="corner bl"></div>
     <div class="corner br"></div>
-
     <div class="currency-label">O'zbekiston Markaziy Banki — Rasmiy Kurs</div>
-
     <div class="rate-display" id="rateDisplay">
       <div class="skeleton"></div>
     </div>
-
     <div class="rate-sub" id="rateSub"></div>
-
     <hr class="divider">
-
     <div class="meta-row">
       <div class="meta-item">
         <span class="meta-key">Sana</span>
@@ -698,28 +390,22 @@
     </div>
   </div>
 
+  <!-- BANKS -->
   <div class="banks-section">
     <div class="section-title">
       <span>Banklar kurslari</span>
       <span class="badge" id="bankBadge">YUKLANMOQDA</span>
     </div>
-
-    <div class="bank-source">
-      Manba: <a href="https://t.me/pulmasalasi" target="_blank">@pulmasalasi</a>
-      &nbsp;·&nbsp; <span id="bankPostDate">—</span>
-    </div>
-
+    <div class="bank-date-info" id="bankDateInfo">—</div>
     <div class="search-wrap">
       <input type="text" class="search-input" id="searchInput" placeholder="Bank qidirish...">
     </div>
-
     <div class="sort-row">
       <button class="sort-btn active" id="sortDefault" onclick="sortBanks('default')">Asl tartib</button>
       <button class="sort-btn" id="sortBuyDesc" onclick="sortBanks('buy-desc')">Olish ↑</button>
       <button class="sort-btn" id="sortSellAsc" onclick="sortBanks('sell-asc')">Sotish ↓</button>
       <button class="sort-btn" id="sortName" onclick="sortBanks('name')">Nom A-Z</button>
     </div>
-
     <div class="bank-header">
       <span>Bank nomi</span>
       <div class="hdr-rates">
@@ -727,7 +413,6 @@
         <span>Sotish</span>
       </div>
     </div>
-
     <div class="bank-list" id="bankList">
       <div class="bank-skeleton"><div class="skel-bar skel-name"></div><div class="skel-bar skel-rate"></div><div class="skel-bar skel-rate"></div></div>
       <div class="bank-skeleton"><div class="skel-bar skel-name"></div><div class="skel-bar skel-rate"></div><div class="skel-bar skel-rate"></div></div>
@@ -739,27 +424,23 @@
 
   <div class="footer">
     CBU: <a href="https://cbu.uz" target="_blank">cbu.uz</a> &nbsp;·&nbsp;
-    Banklar: <a href="https://t.me/pulmasalasi" target="_blank">@pulmasalasi</a> &nbsp;·&nbsp;
     Har 60 soniyada avtomatik yangilanadi
   </div>
 
 </div>
 
 <script>
-// ─── CONFIG ──────────────────────────────────────────────
-const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = window.location.origin;
 const CBU_API = 'https://cbu.uz/uz/arkhiv-kursov-valyut/json/';
 const CBU_API_ENCODED = encodeURIComponent(CBU_API);
 const INTERVAL = 60;
 
-// ─── STATE ───────────────────────────────────────────────
 let currentRate = null;
 let banksData = [];
 let currentSort = 'default';
 let countdown = INTERVAL;
 let countdownTimer = null;
 
-// ─── HELPERS ─────────────────────────────────────────────
 function timedFetch(url, ms) {
   const ctrl = new AbortController();
   const id = setTimeout(() => ctrl.abort(), ms);
@@ -784,18 +465,18 @@ function parseUSD(data) {
   return { rate, diff, dateStr };
 }
 
-function formatRate(rate) {
-  return rate.toLocaleString('uz-UZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function formatRate(r) {
+  return r.toLocaleString('uz-UZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-// ─── STATUS ──────────────────────────────────────────────
+// STATUS
 function setStatus(state) {
   const dot = document.getElementById('statusDot');
   const text = document.getElementById('statusText');
   const card = document.getElementById('mainCard');
   dot.className = 'dot';
   card.classList.remove('loading', 'error-state');
-  if (state === 'live') { text.textContent = 'JONLI'; }
+  if (state === 'live') text.textContent = 'JONLI';
   if (state === 'error') { dot.classList.add('error'); text.textContent = 'XATO'; card.classList.add('error-state'); }
   if (state === 'loading') { dot.classList.add('loading'); text.textContent = 'YUKLANMOQDA'; card.classList.add('loading'); }
 }
@@ -817,7 +498,7 @@ function hideError() {
   document.getElementById('errorBox').classList.remove('visible');
 }
 
-// ─── CBU FETCH ───────────────────────────────────────────
+// CBU
 async function fetchCBU() {
   let lastErr = '';
   for (let i = 0; i < PROXIES.length; i++) {
@@ -828,9 +509,7 @@ async function fetchCBU() {
       const { rate, diff, dateStr } = parseUSD(data);
       updateCBUDisplay(rate, diff, dateStr);
       return true;
-    } catch (err) {
-      lastErr = err.message;
-    }
+    } catch (err) { lastErr = err.message; }
   }
   showError('CBU: ' + lastErr);
   return false;
@@ -840,161 +519,121 @@ function updateCBUDisplay(rate, diff, dateStr) {
   const rateDisplay = document.getElementById('rateDisplay');
   const rateSub = document.getElementById('rateSub');
   const infoGrid = document.getElementById('infoGrid');
-
   const formatted = formatRate(rate);
 
-  // Rate value — animate if already loaded
   const existingVal = rateDisplay.querySelector('.rate-value');
   if (existingVal) {
     existingVal.classList.add('updating');
-    setTimeout(() => {
-      existingVal.textContent = formatted;
-      existingVal.classList.remove('updating');
-    }, 400);
+    setTimeout(() => { existingVal.textContent = formatted; existingVal.classList.remove('updating'); }, 400);
   } else {
-    rateDisplay.innerHTML =
-      '<div class="rate-value">' + formatted + '</div>' +
-      '<div class="rate-currency">UZS</div>';
+    rateDisplay.innerHTML = '<div class="rate-value">' + formatted + '</div><div class="rate-currency">UZS</div>';
     infoGrid.style.display = 'grid';
   }
 
-  // Diff line
   let diffHtml = '1 USD = <span class="val">' + formatted + '</span> UZS';
-  if (diff > 0) {
-    diffHtml += ' &nbsp;·&nbsp; <span class="up">▲ +' + diff + '</span>';
-  } else if (diff < 0) {
-    diffHtml += ' &nbsp;·&nbsp; <span class="down">▼ ' + diff + '</span>';
-  } else {
-    diffHtml += ' &nbsp;·&nbsp; O\'zgarmagan';
-  }
+  if (diff > 0) diffHtml += ' &nbsp;·&nbsp; <span class="up">▲ +' + diff + '</span>';
+  else if (diff < 0) diffHtml += ' &nbsp;·&nbsp; <span class="down">▼ ' + diff + '</span>';
+  else diffHtml += " &nbsp;·&nbsp; O'zgarmagan";
   rateSub.innerHTML = diffHtml;
 
-  // Meta
   const d = new Date(dateStr);
   const dStr = isNaN(d) ? dateStr : d.toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' });
   document.getElementById('metaDate').textContent = dStr;
   document.getElementById('metaTime').textContent = new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-  // Info cards
   document.getElementById('infoUzs').textContent = formatted + " so'm";
   document.getElementById('infoDate').textContent = dStr;
-
   currentRate = rate;
 }
 
-// ─── BANKS FETCH ─────────────────────────────────────────
+// BANKS
 async function fetchBanks() {
   const badge = document.getElementById('bankBadge');
-
   try {
     badge.textContent = 'YUKLANMOQDA';
-    const res = await timedFetch(BACKEND_URL + '/api/banks', 10000);
+    const res = await timedFetch(BACKEND_URL + '/api/banks', 15000);
     const result = await res.json();
 
     if (result.success && result.data.length > 0) {
       banksData = result.data;
       badge.textContent = result.count + ' TA BANK';
-
       if (result.postDate) {
-        document.getElementById('bankPostDate').textContent = 'Dollar kursi — ' + result.postDate;
+        document.getElementById('bankDateInfo').textContent = 'Dollar kursi — ' + result.postDate;
       }
-
       renderBanks();
       return true;
     } else {
       throw new Error(result.error || "Ma'lumot topilmadi");
     }
   } catch (err) {
-    console.error('Banks xato:', err);
+    console.error('Banks:', err);
     badge.textContent = 'XATO';
+    if (banksData.length > 0) {
+      badge.textContent = banksData.length + ' TA BANK (kesh)';
+      return true;
+    }
     document.getElementById('bankList').innerHTML =
-      '<div class="no-results">⚠ Serverga ulanib bo\'lmadi<br>' +
-      '<span style="font-size:10px;opacity:0.6">' + BACKEND_URL + ' ishlayotganini tekshiring</span></div>';
+      '<div class="no-results">⚠ Ma\'lumot yuklanmadi<br><span style="font-size:10px;opacity:0.6">Bir necha soniyadan keyin avtomatik qayta urinadi</span></div>';
     return false;
   }
 }
 
-// ─── RENDER BANKS ────────────────────────────────────────
 function renderBanks() {
   let sorted = [...banksData];
   const query = document.getElementById('searchInput').value.toLowerCase();
-
   if (currentSort === 'buy-desc') sorted.sort((a, b) => (b.buy || 0) - (a.buy || 0));
   else if (currentSort === 'sell-asc') sorted.sort((a, b) => (a.sell || 999999) - (b.sell || 999999));
   else if (currentSort === 'name') sorted.sort((a, b) => a.name.localeCompare(b.name, 'uz'));
-
   if (query) sorted = sorted.filter(b => b.name.toLowerCase().includes(query));
 
   const list = document.getElementById('bankList');
-
-  if (sorted.length === 0) {
-    list.innerHTML = '<div class="no-results">Hech narsa topilmadi</div>';
-    return;
-  }
+  if (sorted.length === 0) { list.innerHTML = '<div class="no-results">Hech narsa topilmadi</div>'; return; }
 
   list.innerHTML = '';
-
   sorted.forEach((bank, i) => {
-    const rankClass = i < 3 ? 'top' : '';
-    const buyText = bank.buy ? bank.buy.toLocaleString() : '—';
-    const sellText = bank.sell ? bank.sell.toLocaleString() : '—';
-    const buyClass = bank.buy ? 'buy' : 'none';
-    const sellClass = bank.sell ? 'sell' : 'none';
-
     const item = document.createElement('div');
     item.className = 'bank-item';
     item.style.animationDelay = (i * 30) + 'ms';
     item.innerHTML =
       '<div class="bank-left">' +
-        '<div class="bank-rank ' + rankClass + '">' + (i + 1) + '</div>' +
+        '<div class="bank-rank ' + (i < 3 ? 'top' : '') + '">' + (i + 1) + '</div>' +
         '<div class="bank-name" title="' + bank.name + '">' + bank.name + '</div>' +
       '</div>' +
       '<div class="bank-rates">' +
-        '<div class="bank-rate ' + buyClass + '">' + buyText + '</div>' +
-        '<div class="bank-rate ' + sellClass + '">' + sellText + '</div>' +
+        '<div class="bank-rate ' + (bank.buy ? 'buy' : 'none') + '">' + (bank.buy ? bank.buy.toLocaleString() : '—') + '</div>' +
+        '<div class="bank-rate ' + (bank.sell ? 'sell' : 'none') + '">' + (bank.sell ? bank.sell.toLocaleString() : '—') + '</div>' +
       '</div>';
     list.appendChild(item);
   });
 }
 
-// ─── SORT ────────────────────────────────────────────────
 function sortBanks(type) {
   currentSort = type;
   document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-  const map = { 'default': 'sortDefault', 'buy-desc': 'sortBuyDesc', 'sell-asc': 'sortSellAsc', 'name': 'sortName' };
-  document.getElementById(map[type]).classList.add('active');
+  document.getElementById({ 'default': 'sortDefault', 'buy-desc': 'sortBuyDesc', 'sell-asc': 'sortSellAsc', 'name': 'sortName' }[type]).classList.add('active');
   renderBanks();
 }
 
 document.getElementById('searchInput').addEventListener('input', renderBanks);
 
-// ─── REFRESH ALL ─────────────────────────────────────────
+// REFRESH
 async function refreshAll(manual) {
   setLoading(true);
   hideError();
-
   const [cbuOk, banksOk] = await Promise.all([fetchCBU(), fetchBanks()]);
-
   setStatus((cbuOk || banksOk) ? 'live' : 'error');
   setLoading(false);
-
   if (manual) resetCountdown();
 }
 
-// ─── COUNTDOWN ───────────────────────────────────────────
 function resetCountdown() {
   clearInterval(countdownTimer);
   countdown = INTERVAL;
   updateProgress();
-
   countdownTimer = setInterval(() => {
     countdown--;
     document.getElementById('infoNext').textContent = countdown + ' soniya';
     updateProgress();
-    if (countdown <= 0) {
-      refreshAll(false);
-      resetCountdown();
-    }
+    if (countdown <= 0) { refreshAll(false); resetCountdown(); }
   }, 1000);
 }
 
@@ -1002,11 +641,7 @@ function updateProgress() {
   document.getElementById('progressBar').style.width = ((countdown / INTERVAL) * 100) + '%';
 }
 
-// ─── INIT ────────────────────────────────────────────────
-window.onload = function() {
-  refreshAll(false);
-  resetCountdown();
-};
+window.onload = function() { refreshAll(false); resetCountdown(); };
 </script>
 </body>
 </html>
