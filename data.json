@@ -1,94 +1,202 @@
 {
   "banks": [
     {
-      "name": "Garant bank",
-      "buy": 12190,
-      "sell": 12270
+      "name": "Ipoteka Bank",
+      "buy": 12155,
+      "sell": 12213,
+      "source": "own"
     },
     {
-      "name": "Asakabank",
-      "buy": 12180,
-      "sell": 12270
+      "name": "KDB Bank Uzbekistan",
+      "buy": 12155,
+      "sell": 12270,
+      "source": "own|tg"
     },
     {
-      "name": "Poytaxt bank",
+      "name": "Microcreditbank",
       "buy": 12160,
-      "sell": 12270
-    },
-    {
-      "name": "Orient Finans Bank",
-      "buy": 12160,
-      "sell": 12260
+      "sell": 12250,
+      "source": "own"
     },
     {
       "name": "Octobank",
       "buy": 12160,
-      "sell": 12230
+      "sell": 12230,
+      "source": "telegram"
     },
     {
-      "name": "Ipak Yuli Bank",
+      "name": "Poytaxt Bank",
       "buy": 12160,
-      "sell": 12250
+      "sell": 12270,
+      "source": "own"
     },
     {
-      "name": "O‘zsanoatqurilishbank",
+      "name": "Orient Finans Bank",
       "buy": 12160,
-      "sell": 12270
+      "sell": 12280,
+      "source": "own"
+    },
+    {
+      "name": "TBC Bank",
+      "buy": 12213,
+      "sell": 12265,
+      "source": "own"
+    },
+    {
+      "name": "Trastbank",
+      "buy": 12160,
+      "sell": 12270,
+      "source": "own"
+    },
+    {
+      "name": "Agrobank",
+      "buy": 12155,
+      "sell": 12250,
+      "source": "own"
+    },
+    {
+      "name": "AloqaBank",
+      "buy": 12155,
+      "sell": 12240,
+      "source": "own"
+    },
+    {
+      "name": "ANOR BANK",
+      "buy": null,
+      "sell": 12190,
+      "source": "own"
+    },
+    {
+      "name": "APEXBANK",
+      "buy": 12160,
+      "sell": 12295,
+      "source": "own"
+    },
+    {
+      "name": "Asakabank",
+      "buy": 12180,
+      "sell": 12270,
+      "source": "telegram"
+    },
+    {
+      "name": "Asia Alliance Bank",
+      "buy": 12190,
+      "sell": 12245,
+      "source": "own"
+    },
+    {
+      "name": "BRB",
+      "buy": 12180,
+      "sell": 12240,
+      "source": "own"
+    },
+    {
+      "name": "DavrBank",
+      "buy": 12160,
+      "sell": 12230,
+      "source": "own"
+    },
+    {
+      "name": "Garant Bank",
+      "buy": 12190,
+      "sell": 12270,
+      "source": "telegram"
+    },
+    {
+      "name": "Hamkorbank",
+      "buy": 12213,
+      "sell": null,
+      "source": "own"
     },
     {
       "name": "Hayot Bank",
       "buy": 12160,
-      "sell": 12240
+      "sell": 12213,
+      "source": "own"
     },
     {
-      "name": "Turon bank",
-      "buy": 12160,
-      "sell": 12240
-    },
-    {
-      "name": "MKBank",
-      "buy": 12160,
-      "sell": 12250
-    },
-    {
-      "name": "Ipoteka bank",
+      "name": "InFinBank",
       "buy": 12155,
-      "sell": 12250
+      "sell": 12270,
+      "source": "telegram"
     },
     {
-      "name": "Infinbank",
+      "name": "Ipak Yo'li Banki",
+      "buy": 12160,
+      "sell": 12250,
+      "source": "own"
+    },
+    {
+      "name": "Kapitalbank",
       "buy": 12155,
-      "sell": 12270
+      "sell": 12225,
+      "source": "own"
+    },
+    {
+      "name": "Madad Invest Bank",
+      "buy": 12160,
+      "sell": 12270,
+      "source": "own"
+    },
+    {
+      "name": "Tenge Bank",
+      "buy": 12120,
+      "sell": 12240,
+      "source": "own"
+    },
+    {
+      "name": "Turon Bank",
+      "buy": 12160,
+      "sell": 12240,
+      "source": "own"
+    },
+    {
+      "name": "Universalbank",
+      "buy": null,
+      "sell": null,
+      "source": "none"
+    },
+    {
+      "name": "SaderatBank",
+      "buy": 12160,
+      "sell": 12270,
+      "source": "own"
+    },
+    {
+      "name": "SanoatQurilishBank",
+      "buy": 12213,
+      "sell": 12270,
+      "source": "own"
+    },
+    {
+      "name": "Ziraat Bank",
+      "buy": 12160,
+      "sell": 12290,
+      "source": "own"
+    },
+    {
+      "name": "NBU (UzNatsbank)",
+      "buy": 12160,
+      "sell": 12250,
+      "source": "own"
     },
     {
       "name": "Xalq Banki",
-      "buy": 12155,
-      "sell": 12260
-    },
-    {
-      "name": "BRB",
-      "buy": 12150,
-      "sell": 12260
-    },
-    {
-      "name": "Aloqabank",
-      "buy": 12150,
-      "sell": 12215
-    },
-    {
-      "name": "Agrobank",
-      "buy": 12110,
-      "sell": 12230
-    },
-    {
-      "name": "KDB Bank Uzbekiston",
-      "buy": 12110,
-      "sell": 12270
+      "buy": 12290,
+      "sell": 13500,
+      "source": "own"
     }
   ],
-  "cbuRate": "12212.79",
   "postDate": "23.02.2026",
-  "lastFetch": 1771821259371,
-  "source": "telegram_web",
-  "fetchTime": "2026-02-23T04:34:19.371Z"
+  "lastFetch": 1771843740196,
+  "source": "own:26 tg:4 mixed:1",
+  "fetchTime": "2026-02-23T10:49:00.196Z",
+  "successCount": 30,
+  "fullCount": 28,
+  "partialCount": 2,
+  "totalCount": 31,
+  "ownCount": 26,
+  "tgCount": 4,
+  "mixedCount": 1,
+  "elapsed": "54.5s"
 }
