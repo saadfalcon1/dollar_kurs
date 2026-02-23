@@ -1,0 +1,94 @@
+{
+  "banks": [
+    {
+      "name": "Garant bank",
+      "buy": 12190,
+      "sell": 12270
+    },
+    {
+      "name": "Asakabank",
+      "buy": 12180,
+      "sell": 12270
+    },
+    {
+      "name": "Poytaxt bank",
+      "buy": 12160,
+      "sell": 12270
+    },
+    {
+      "name": "Orient Finans Bank",
+      "buy": 12160,
+      "sell": 12260
+    },
+    {
+      "name": "Octobank",
+      "buy": 12160,
+      "sell": 12230
+    },
+    {
+      "name": "Ipak Yuli Bank",
+      "buy": 12160,
+      "sell": 12250
+    },
+    {
+      "name": "O‘zsanoatqurilishbank",
+      "buy": 12160,
+      "sell": 12270
+    },
+    {
+      "name": "Hayot Bank",
+      "buy": 12160,
+      "sell": 12240
+    },
+    {
+      "name": "Turon bank",
+      "buy": 12160,
+      "sell": 12240
+    },
+    {
+      "name": "MKBank",
+      "buy": 12160,
+      "sell": 12250
+    },
+    {
+      "name": "Ipoteka bank",
+      "buy": 12155,
+      "sell": 12250
+    },
+    {
+      "name": "Infinbank",
+      "buy": 12155,
+      "sell": 12270
+    },
+    {
+      "name": "Xalq Banki",
+      "buy": 12155,
+      "sell": 12260
+    },
+    {
+      "name": "BRB",
+      "buy": 12150,
+      "sell": 12260
+    },
+    {
+      "name": "Aloqabank",
+      "buy": 12150,
+      "sell": 12215
+    },
+    {
+      "name": "Agrobank",
+      "buy": 12110,
+      "sell": 12230
+    },
+    {
+      "name": "KDB Bank Uzbekiston",
+      "buy": 12110,
+      "sell": 12270
+    }
+  ],
+  "cbuRate": "12212.79",
+  "postDate": "23.02.2026",
+  "lastFetch": 1771821259371,
+  "source": "telegram_web",
+  "fetchTime": "2026-02-23T04:34:19.371Z"
+}
