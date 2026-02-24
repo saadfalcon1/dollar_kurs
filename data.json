@@ -188,12 +188,12 @@
     }
   ],
   "postDate": "24.02.2026",
-  "lastFetch": 1771932988586,
+  "lastFetch": 1771933688014,
   "source": "web-only",
-  "fetchTime": "2026-02-24T11:36:28.586Z",
+  "fetchTime": "2026-02-24T11:48:08.014Z",
   "successCount": 31,
   "fullCount": 31,
   "partialCount": 0,
   "totalCount": 31,
-  "elapsed": "71.4s"
+  "elapsed": "76.4s"
 }
