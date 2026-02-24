@@ -60,19 +60,19 @@ const BANKS = [
 
   { name: 'Agrobank',
     url: 'https://agrobank.uz/ru/person/exchange_rates',
-    js: true, wait: 4000 },
+    js: true, wait: 8000 },
 
   { name: 'AloqaBank',
     url: 'https://aloqabank.uz/ru/services/exchange-rates/',
-    js: true, wait: 4000 },
+    js: true, wait: 6000 },
 
   { name: 'ANOR BANK',
     url: 'https://anorbank.uz/about/exchange-rates/',
-    js: true, wait: 7000 },
+    js: true, wait: 8000 },
 
   { name: 'APEXBANK',
     url: 'https://www.apexbank.uz/ru/about/exchange-rates/',
-    js: true, wait: 4000 },
+    js: true, wait: 8000 },
 
   // Asakabank — yangi URL, maxsus extractor
   { name: 'Asakabank',
@@ -83,15 +83,15 @@ const BANKS = [
 
   { name: 'Asia Alliance Bank',
     url: 'https://aab.uz/ru/exchange-rates/',
-    js: true, wait: 4000 },
+    js: true, wait: 8000 },
 
   { name: 'BRB',
     url: 'https://brb.uz/',
-    js: true, wait: 8000, brbMode: true },
+    js: true, wait: 10000, brbMode: true },
 
   { name: 'DavrBank',
     url: 'https://davrbank.uz/ru/exchange-rate',
-    js: true, wait: 4000 },
+    js: true, wait: 6000 },
 
   { name: 'Garant Bank',
     url: 'https://garantbank.uz/ru/exchange-rates',
@@ -120,49 +120,49 @@ const BANKS = [
 
   { name: 'Kapitalbank',
     url: 'https://www.kapitalbank.uz/uz/services/exchange-rates/',
-    js: true, wait: 4000 },
+    js: true, wait: 8000 },
 
   { name: 'Madad Invest Bank',
     url: 'https://www.madadinvestbank.uz/',
-    js: true, wait: 4000 },
+    js: true, wait: 6000 },
 
   { name: 'Octobank',
     url: 'https://octobank.uz/o-banke/kurs-valyut',
-    js: true, wait: 5000 },
+    js: true, wait: 7000 },
 
   { name: 'SaderatBank',
     url: 'https://saderatbank.uz/',
-    js: true, wait: 4000 },
+    js: true, wait: 6000 },
 
   { name: 'SanoatQurilishBank',
     url: 'https://sqb.uz/uz/individuals/exchange-money/?srsltid=AfmBOopAZyD9yCp6lcgY2Lak3i4yylTM0jzFyhJW4YgaySFijg6rEcg5',
-    js: true, wait: 6000,
+    js: true, wait: 9000,
     altUrl: 'https://sqb.uz/ru/individuals/currency-rates/' },
 
   { name: 'Tenge Bank',
     url: 'https://tengebank.uz/exchange-rates',
-    js: true, wait: 6000 },
+    js: true, wait: 9000 },
 
   { name: 'Turon Bank',
     url: 'https://turonbank.uz/ru/services/exchange-rates/',
-    js: true, wait: 4000 },
+    js: true, wait: 6000 },
 
   { name: 'Universalbank',
     url: 'https://universalbank.uz/currency',
-    js: true, wait: 7000,
+    js: true, wait: 9000,
     altUrl: 'https://universalbank.uz/' },
 
   { name: 'Ziraat Bank',
     url: 'https://ziraatbank.uz/ru/exchange-rates',
-    js: true, wait: 4000 },
+    js: true, wait: 8000 },
 
   { name: 'NBU (UzNatsbank)',
     url: 'https://nbu.uz/ru/fizicheskim-litsam-kursy-valyut',
-    js: true, wait: 4000 },
+    js: true, wait: 6000 },
 
   { name: 'Xalq Banki',
     url: 'https://xb.uz/page/valyuta-ayirboshlash',
-    js: true, wait: 8000 },
+    js: true, wait: 10000 },
 ];
 
 // ============================================
@@ -176,7 +176,6 @@ async function getBrowser() {
     if (!puppeteerLib) puppeteerLib = require('puppeteer');
     browser = await puppeteerLib.launch({
       headless: 'new',
-      executablePath: '/usr/bin/chromium-browser',
       args: ['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage',
              '--disable-gpu','--disable-extensions','--window-size=1366,768'],
     });
@@ -801,21 +800,28 @@ const BRB_FN = `(function(){
   }
 
   // 1. Jadvaldan qidirish — "BRB mobile" ni skip qilib, oddiy USD oladi
-  for (var tbl of document.querySelectorAll('table')) {
-    var rows = [...tbl.querySelectorAll('tr')];
+  var tables = document.querySelectorAll('table');
+  for (var ti = 0; ti < tables.length; ti++) {
+    var tbl = tables[ti];
+    var rows = tbl.querySelectorAll('tr');
     var bc = -1, sc = -1;
     var foundUSD = false;
     
-    for (var row of rows) {
-      var cells = [...row.querySelectorAll('td,th')].map(function(x){ return x.innerText.trim(); });
+    for (var ri = 0; ri < rows.length; ri++) {
+      var row = rows[ri];
+      var cellElems = row.querySelectorAll('td,th');
+      var cells = [];
+      for (var ci = 0; ci < cellElems.length; ci++) {
+        cells.push(cellElems[ci].innerText.trim());
+      }
       var joined = cells.join('|');
       
       // Sarlavha qatori — ustun indekslarini topish
       if (/(sotib\\s*olish|покупка|buy)/i.test(joined) && /(sotish|продажа|sell)/i.test(joined)) {
-        cells.forEach(function(c, i) {
-          if (/(sotib\\s*olish|покупка|buy)/i.test(c) && bc < 0) bc = i;
-          if (/(sotish|продажа|sell)/i.test(c) && sc < 0) sc = i;
-        });
+        for (var j = 0; j < cells.length; j++) {
+          if (/(sotib\\s*olish|покупка|buy)/i.test(cells[j]) && bc < 0) bc = j;
+          if (/(sotish|продажа|sell)/i.test(cells[j]) && sc < 0) sc = j;
+        }
         continue;
       }
       
@@ -823,13 +829,19 @@ const BRB_FN = `(function(){
       if (/BRB\\s*mobile|мобиль|app/i.test(cells.join('|'))) continue;
       
       // USD qatori — faqat birinchi topilgan oddiy USD (BRB mobile emas)
-      if (cells.some(function(c){ return /^USD$|доллар\\s*США|us\\s*dollar/i.test(c.trim()); })) {
-        if (!foundUSD) {
-          foundUSD = true;
-          var bVal = bc >= 0 ? n(cells[bc]) : null;
-          var sVal = sc >= 0 ? n(cells[sc]) : null;
-          if (bVal || sVal) return { buy: bVal, sell: sVal, src: 'brb-table' };
+      var hasUSD = false;
+      for (var k = 0; k < cells.length; k++) {
+        if (/^USD$|доллар\\s*США|us\\s*dollar/i.test(cells[k].trim())) {
+          hasUSD = true;
+          break;
         }
+      }
+      
+      if (hasUSD && !foundUSD) {
+        foundUSD = true;
+        var bVal = bc >= 0 ? n(cells[bc]) : null;
+        var sVal = sc >= 0 ? n(cells[sc]) : null;
+        if (bVal || sVal) return { buy: bVal, sell: sVal, src: 'brb-table' };
       }
     }
   }
@@ -843,7 +855,10 @@ const BRB_FN = `(function(){
     var chunk = textNoMobile.substring(Math.max(0, usdPos - 100), usdPos + 500);
     var ns = [];
     var matches = chunk.match(/\\b(1[012]\\d{3})\\b/g) || [];
-    matches.forEach(function(x){ var v=n(x); if(v!==null&&ns.indexOf(v)<0) ns.push(v); });
+    for (var m = 0; m < matches.length; m++) {
+      var v = n(matches[m]);
+      if (v !== null && ns.indexOf(v) < 0) ns.push(v);
+    }
     if (ns.length >= 2) return { buy: ns[0], sell: ns[1], src: 'brb-text' };
   }
 
