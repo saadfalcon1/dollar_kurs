@@ -285,7 +285,6 @@
     justify-content: center; border: 1px solid var(--border);
     border-radius: 2px; flex-shrink: 0;
   }
-  .bank-rank.top { border-color: var(--gold); color: var(--gold); background: rgba(245,158,11,0.08); }
   .bank-name { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .bank-rates { display: flex; gap: 24px; flex-shrink: 0; }
   .bank-rate { min-width: 80px; text-align: right; font-family: var(--mono); font-size: 13px; font-weight: 700; letter-spacing: -0.5px; }
@@ -333,7 +332,7 @@
     <div class="corner tr"></div>
     <div class="corner bl"></div>
     <div class="corner br"></div>
-    <div class="currency-label">O'zbekiston Markaziy Banki — Rasmiy Kurs</div>
+    <div class="currency-label">O'zbekiston Respublikasi Markaziy Banki — Rasmiy Kurs</div>
     <div class="rate-display" id="rateDisplay">
       <div class="skeleton"></div>
     </div>
@@ -370,12 +369,12 @@
   <div class="info-grid" id="infoGrid" style="display:none">
     <div class="info-card">
       <div class="info-card-icon">💰</div>
-      <div class="info-card-label">Valyuta kodi</div>
+      <div class="info-card-label">Valyuta</div>
       <div class="info-card-val">USD / UZS</div>
     </div>
     <div class="info-card">
       <div class="info-card-icon">🏦</div>
-      <div class="info-card-label">CBU rasmiy kurs</div>
+      <div class="info-card-label">Markaziy bank: Rasmiy kurs</div>
       <div class="info-card-val" id="infoUzs">—</div>
     </div>
     <div class="info-card">
@@ -393,7 +392,7 @@
   <!-- BANKS -->
   <div class="banks-section">
     <div class="section-title">
-      <span>Banklar kurslari</span>
+      <span>Tijorat banklarida USD kursi</span>
       <span class="badge" id="bankBadge">YUKLANMOQDA</span>
     </div>
     <div class="bank-date-info" id="bankDateInfo">—</div>
@@ -401,15 +400,14 @@
       <input type="text" class="search-input" id="searchInput" placeholder="Bank qidirish...">
     </div>
     <div class="sort-row">
-      <button class="sort-btn active" id="sortDefault" onclick="sortBanks('default')">Asl tartib</button>
-      <button class="sort-btn" id="sortBuyDesc" onclick="sortBanks('buy-desc')">Olish ↑</button>
+      <button class="sort-btn active" id="sortBuyDesc" onclick="sortBanks('buy-desc')">Sotib olish ↑</button>
       <button class="sort-btn" id="sortSellAsc" onclick="sortBanks('sell-asc')">Sotish ↓</button>
       <button class="sort-btn" id="sortName" onclick="sortBanks('name')">Nom A-Z</button>
     </div>
     <div class="bank-header">
       <span>Bank nomi</span>
       <div class="hdr-rates">
-        <span>Olish</span>
+        <span>Sotib olish</span>
         <span>Sotish</span>
       </div>
     </div>
@@ -437,7 +435,7 @@ const INTERVAL = 60;
 
 let currentRate = null;
 let banksData = [];
-let currentSort = 'default';
+let currentSort = 'buy-desc';
 let countdown = INTERVAL;
 let countdownTimer = null;
 
@@ -595,7 +593,7 @@ function renderBanks() {
     item.style.animationDelay = (i * 30) + 'ms';
     item.innerHTML =
       '<div class="bank-left">' +
-        '<div class="bank-rank ' + (i < 3 ? 'top' : '') + '">' + (i + 1) + '</div>' +
+        '<div class="bank-rank">' + (i + 1) + '</div>' +
         '<div class="bank-name" title="' + bank.name + '">' + bank.name + '</div>' +
       '</div>' +
       '<div class="bank-rates">' +
@@ -609,7 +607,7 @@ function renderBanks() {
 function sortBanks(type) {
   currentSort = type;
   document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById({ 'default': 'sortDefault', 'buy-desc': 'sortBuyDesc', 'sell-asc': 'sortSellAsc', 'name': 'sortName' }[type]).classList.add('active');
+  document.getElementById({ 'buy-desc': 'sortBuyDesc', 'sell-asc': 'sortSellAsc', 'name': 'sortName' }[type]).classList.add('active');
   renderBanks();
 }
 
