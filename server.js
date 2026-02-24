@@ -176,7 +176,11 @@ async function getBrowser() {
     if (!puppeteerLib) puppeteerLib = require('puppeteer');
     browser = await puppeteerLib.launch({
       headless: 'new',
-      args: ['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage',
+      executablePath: process.env.CHROME_PATH ||
+                  '/usr/bin/google-chrome-stable' ||
+                  '/usr/bin/chromium-browser' ||
+                  '/usr/bin/chromium',
+      args: ['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage','--no-zygote',          // ← server uchun muhim'--single-process',     // ← RAM kam bo'lsa
              '--disable-gpu','--disable-extensions','--window-size=1366,768'],
     });
     console.log('[BROWSER] ✅ Ishga tushdi');
