@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.static('public'));
 
 const DATA_FILE       = path.join(__dirname, 'data.json');
-const SCRAPE_INTERVAL = 30 * 60 * 1000;
+const SCRAPE_INTERVAL = 6 * 30 * 60 * 1000;
 const PORT = process.env.PORT || 3000;
 const UA   = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36';
 
@@ -1408,7 +1408,7 @@ app.listen(PORT, async () => {
   console.log('╚═════════════════════════════════════════════════════╝');
   console.log(`📡 http://localhost:${PORT}  |  🏦 ${BANKS.length} bank`);
   console.log(`📅 ${getDateFormatted(0)}  |  USD: ${USD_MIN.toLocaleString()}–${USD_MAX.toLocaleString()}`);
-  console.log(`⏱️  Har ${SCRAPE_INTERVAL/60000} daqiqada yangilanadi`);
+  console.log(`⏱️  Har ${SCRAPE_INTERVAL} daqiqada yangilanadi`);
   console.log('');
   console.log('📌 v15 tuzatishlar:');
   console.log('   Hamkorbank      : isCBRate "12,140"=minglik, faqat 2-decimal=CB ✅');
