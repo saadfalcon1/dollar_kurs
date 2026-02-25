@@ -3,31 +3,31 @@
     {
       "name": "Ipoteka Bank",
       "buy": 12130,
-      "sell": 12250,
+      "sell": 12230,
       "source": "own"
     },
     {
       "name": "KDB Bank Uzbekistan",
       "buy": 12130,
-      "sell": 12295,
+      "sell": 12245,
       "source": "own"
     },
     {
       "name": "Microcreditbank",
       "buy": 12130,
-      "sell": 12250,
+      "sell": 12220,
       "source": "own"
     },
     {
       "name": "Orient Finans Bank",
       "buy": 12130,
-      "sell": 12280,
+      "sell": 12220,
       "source": "own"
     },
     {
       "name": "Poytaxt Bank",
       "buy": 12130,
-      "sell": 12210,
+      "sell": 12185,
       "source": "own"
     },
     {
@@ -39,7 +39,7 @@
     {
       "name": "Trastbank",
       "buy": 12130,
-      "sell": 12260,
+      "sell": 12220,
       "source": "own"
     },
     {
@@ -51,149 +51,149 @@
     {
       "name": "AloqaBank",
       "buy": 12130,
-      "sell": 12230,
+      "sell": 12190,
       "source": "own"
     },
     {
       "name": "ANOR BANK",
       "buy": 12130,
-      "sell": 12245,
+      "sell": 12200,
       "source": "own"
     },
     {
       "name": "APEXBANK",
       "buy": 12130,
-      "sell": 12200,
+      "sell": 12190,
       "source": "own"
     },
     {
       "name": "Asakabank",
-      "buy": 12150,
-      "sell": 12250,
+      "buy": 12130,
+      "sell": 12200,
       "source": "own"
     },
     {
       "name": "Asia Alliance Bank",
-      "buy": 12155,
-      "sell": 12235,
+      "buy": 12145,
+      "sell": 12205,
       "source": "own"
     },
     {
       "name": "BRB",
       "buy": 12130,
-      "sell": 12250,
+      "sell": 12240,
       "source": "own"
     },
     {
       "name": "DavrBank",
       "buy": 12130,
-      "sell": 12235,
+      "sell": 12190,
       "source": "own"
     },
     {
       "name": "Garant Bank",
-      "buy": 12150,
-      "sell": 12290,
+      "buy": 12135,
+      "sell": 12245,
       "source": "own"
     },
     {
       "name": "Hamkorbank",
       "buy": 12130,
-      "sell": 12260,
+      "sell": 12240,
       "source": "own"
     },
     {
       "name": "Hayot Bank",
       "buy": 12130,
-      "sell": 12240,
+      "sell": 12200,
       "source": "own"
     },
     {
       "name": "InFinBank",
       "buy": 12130,
-      "sell": 12210,
+      "sell": 12245,
       "source": "own"
     },
     {
       "name": "Ipak Yo'li Banki",
-      "buy": 12140,
-      "sell": 12250,
+      "buy": 12130,
+      "sell": 12210,
       "source": "own"
     },
     {
       "name": "Kapitalbank",
       "buy": 12130,
-      "sell": 12210,
+      "sell": 12180,
       "source": "own"
     },
     {
       "name": "Madad Invest Bank",
       "buy": 12130,
-      "sell": 12290,
+      "sell": 12240,
       "source": "own"
     },
     {
       "name": "Octobank",
-      "buy": 12140,
-      "sell": 12240,
+      "buy": 12130,
+      "sell": 12200,
       "source": "own"
     },
     {
       "name": "SaderatBank",
       "buy": 12130,
-      "sell": 12240,
+      "sell": 12210,
       "source": "own"
     },
     {
       "name": "SanoatQurilishBank",
       "buy": 12130,
-      "sell": 12240,
+      "sell": 12190,
       "source": "own"
     },
     {
       "name": "Tenge Bank",
-      "buy": 12140,
-      "sell": 12240,
+      "buy": 12090,
+      "sell": 12190,
       "source": "own"
     },
     {
       "name": "Turon Bank",
       "buy": 12130,
-      "sell": 12240,
+      "sell": 12190,
       "source": "own"
     },
     {
       "name": "Universalbank",
-      "buy": 12140,
-      "sell": 12260,
+      "buy": 12130,
+      "sell": 12240,
       "source": "own"
     },
     {
       "name": "Ziraat Bank",
-      "buy": 12140,
-      "sell": 12290,
+      "buy": 12130,
+      "sell": 12240,
       "source": "own"
     },
     {
       "name": "NBU (UzNatsbank)",
-      "buy": 12140,
-      "sell": 12250,
+      "buy": 12130,
+      "sell": 12220,
       "source": "own"
     },
     {
       "name": "Xalq Banki",
       "buy": 12130,
-      "sell": 12240,
+      "sell": 12200,
       "source": "own"
     }
   ],
-  "postDate": "24.02.2026",
-  "lastFetch": 1771933688014,
+  "postDate": "25.02.2026",
+  "lastFetch": 1771995277483,
   "source": "web-only",
-  "fetchTime": "2026-02-24T11:48:08.014Z",
+  "fetchTime": "2026-02-25T04:54:37.483Z",
   "successCount": 31,
   "fullCount": 31,
   "partialCount": 0,
   "totalCount": 31,
-  "elapsed": "76.4s"
+  "elapsed": "85.9s"
 }

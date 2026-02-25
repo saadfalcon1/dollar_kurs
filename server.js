@@ -1,5 +1,3 @@
-
-
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -21,14 +19,23 @@ const USD_MAX = 13200;
 //  SERVER DETECTION
 // ============================================
 const IS_SERVER = process.env.NODE_ENV === 'production' || !!process.env.SERVER;
-const FETCH_TIMEOUT  = IS_SERVER ? 20000 : 13000;
-const NAV_TIMEOUT    = IS_SERVER ? 35000 : 22000;
-const WAIT_MULT      = IS_SERVER ? 1.5   : 1.0;
-const BATCH_SIZE     = process.env.PUPPETEER_BATCH
-  ? parseInt(process.env.PUPPETEER_BATCH)
-  : (IS_SERVER ? 2 : 5);
 
-// Chrome executable path (server uchun)
+// Server uchun oshirilgan timeoutlar
+const FETCH_TIMEOUT  = IS_SERVER ? 30000 : 13000;
+const NAV_TIMEOUT    = IS_SERVER ? 60000 : 22000;
+const WAIT_MULT      = IS_SERVER ? 2.0   : 1.0;
+const PAGE_CLOSE_TIMEOUT = IS_SERVER ? 5000 : 3000;
+
+// Server da 1 ta parallel — RAM tejash uchun
+const BATCH_SIZE = process.env.PUPPETEER_BATCH
+  ? parseInt(process.env.PUPPETEER_BATCH)
+  : (IS_SERVER ? 1 : 5);
+
+// Har N ta scrape dan keyin browser qayta yuklanadi (memory leak oldini olish)
+const BROWSER_RESTART_EVERY = IS_SERVER ? 1 : 3;
+let scrapeCount = 0;
+
+// Chrome executable path
 const CHROME_PATH = process.env.CHROME_PATH
   || (() => {
     const candidates = [
@@ -41,10 +48,14 @@ const CHROME_PATH = process.env.CHROME_PATH
     for (const p of candidates) {
       try { if (fs.existsSync(p)) return p; } catch(_) {}
     }
-    return null; // puppeteer o'zining Chrome'ini ishlatadi
+    return null;
   })();
 
+// Batch'lar orasida pauza — RAM siqilishini oldini olish
+const BATCH_DELAY = IS_SERVER ? 2000 : 500;
+
 console.log(`[CONFIG] IS_SERVER=${IS_SERVER} | BATCH=${BATCH_SIZE} | CHROME=${CHROME_PATH || 'bundled'}`);
+console.log(`[CONFIG] NAV_TIMEOUT=${NAV_TIMEOUT}ms | WAIT_MULT=${WAIT_MULT} | RESTART_EVERY=${BROWSER_RESTART_EVERY}`);
 
 // ============================================
 //  31 TA BANK
@@ -199,11 +210,23 @@ const BANKS = [
 let puppeteerLib = null;
 let browser = null;
 
+async function closeBrowser() {
+  if (!browser) return;
+  const b = browser;
+  browser = null;
+  try {
+    await Promise.race([
+      b.close(),
+      new Promise(r => setTimeout(r, 5000)),
+    ]);
+    console.log('[BROWSER] ✅ Yopildi');
+  } catch(_) {}
+}
+
 async function getBrowser() {
-  // Haqiqiy holat tekshiruvi
   try {
     if (browser && browser.isConnected()) {
-      await browser.pages(); // haqiqiy test — xato bo'lsa catch ga o'tadi
+      await browser.pages();
       return browser;
     }
   } catch (e) {
@@ -221,24 +244,46 @@ async function getBrowser() {
     '--disable-extensions',
     '--no-zygote',
     '--window-size=1366,768',
+    // Anti-bot detection
+    '--disable-blink-features=AutomationControlled',
+    // Server RAM tejash
+    '--disable-background-networking',
+    '--disable-default-apps',
+    '--disable-sync',
+    '--disable-translate',
+    '--hide-scrollbars',
+    '--metrics-recording-only',
+    '--mute-audio',
+    '--no-first-run',
+    '--safebrowsing-disable-auto-update',
   ];
 
-  // Server da single-process (kam RAM uchun)
-  if (IS_SERVER) launchArgs.push('--single-process');
+  if (IS_SERVER) {
+    launchArgs.push('--single-process');
+    // Server da shared memory yo'q bo'lishi mumkin
+    launchArgs.push('--disable-features=VizDisplayCompositor');
+  }
 
   const launchOpts = {
-    headless: true,   // 'new' emas — server uchun true ishonchliroq
+    headless: true,
     args: launchArgs,
+    // Server da bundled Chrome ham ishlasin
+    ignoreHTTPSErrors: true,
   };
 
-  // Agar tizimda Chrome topilgan bo'lsa — uni ishlatamiz
   if (CHROME_PATH) {
     launchOpts.executablePath = CHROME_PATH;
     console.log(`[BROWSER] executablePath: ${CHROME_PATH}`);
   }
 
   browser = await puppeteerLib.launch(launchOpts);
+  browser.on('disconnected', () => {
+    console.log('[BROWSER] ⚠️  Ulanish uzildi');
+    browser = null;
+  });
+
   console.log('[BROWSER] ✅ Ishga tushdi');
+  logMemory();
   return browser;
 }
 
@@ -248,7 +293,18 @@ async function newPage() {
   await page.setUserAgent(UA);
   await page.setViewport({ width: 1366, height: 768 });
   await page.setDefaultNavigationTimeout(NAV_TIMEOUT);
+  // Bot aniqlanishini kamaytirish
+  await page.evaluateOnNewDocument(() => {
+    Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+  });
   return page;
+}
+
+// RAM holati loging
+function logMemory() {
+  if (!IS_SERVER) return;
+  const m = process.memoryUsage();
+  console.log(`[MEM] RSS=${Math.round(m.rss/1024/1024)}MB | Heap=${Math.round(m.heapUsed/1024/1024)}/${Math.round(m.heapTotal/1024/1024)}MB`);
 }
 
 // ============================================
@@ -1102,25 +1158,34 @@ function parseTextHTML(html) {
 }
 
 // ============================================
-//  FETCH — server-safe timeout
+//  FETCH — server-safe timeout + retry
 // ============================================
-async function doFetch(url) {
-  const ctrl = new AbortController();
-  const t = setTimeout(()=>ctrl.abort(), FETCH_TIMEOUT);
-  try {
-    const res = await fetch(url, {
-      signal: ctrl.signal,
-      headers: {
-        'User-Agent': UA,
-        'Accept': 'text/html,application/xhtml+xml,*/*;q=0.9',
-        'Accept-Language': 'ru-RU,ru;q=0.9,uz;q=0.8,en;q=0.7',
-        'Cache-Control': 'no-cache',
-      },
-    });
-    clearTimeout(t);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.text();
-  } finally { clearTimeout(t); }
+async function doFetch(url, retries = 2) {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT);
+    try {
+      const res = await fetch(url, {
+        signal: ctrl.signal,
+        headers: {
+          'User-Agent': UA,
+          'Accept': 'text/html,application/xhtml+xml,*/*;q=0.9',
+          'Accept-Language': 'ru-RU,ru;q=0.9,uz;q=0.8,en;q=0.7',
+          'Cache-Control': 'no-cache',
+        },
+      });
+      clearTimeout(t);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.text();
+    } catch(e) {
+      clearTimeout(t);
+      if (attempt < retries) {
+        await new Promise(r => setTimeout(r, 1500 * (attempt + 1)));
+        continue;
+      }
+      throw e;
+    }
+  }
 }
 
 // ============================================
@@ -1135,25 +1200,35 @@ async function doPuppeteer(bank) {
       if (t==='image'||t==='media'||t==='font'||t==='stylesheet') req.abort();
       else req.continue();
     });
-    await page.goto(bank.url, { waitUntil: 'domcontentloaded', timeout: NAV_TIMEOUT });
-    // Server da wait muddatini 1.5x oshiramiz
+
+    // networkidle2 ni ham sinab ko'rish (ba'zi saytlar uchun)
+    try {
+      await page.goto(bank.url, { waitUntil: 'domcontentloaded', timeout: NAV_TIMEOUT });
+    } catch(navErr) {
+      // Agar domcontentloaded ishlamasa — load ni sinab ko'r
+      if (navErr.message.includes('timeout') || navErr.message.includes('net::')) {
+        await page.goto(bank.url, { waitUntil: 'load', timeout: NAV_TIMEOUT });
+      } else {
+        throw navErr;
+      }
+    }
+
     await new Promise(r => setTimeout(r, Math.round((bank.wait || 4000) * WAIT_MULT)));
 
     let fn = DOM_EXTRACT_FN;
-    if (bank.hamkorMode)    fn = HAMKOR_FN;
-    else if (bank.tbcMode)  fn = TBC_FN;
-    else if (bank.asakaMode)     fn = ASAKA_FN;
-    else if (bank.hayotMode)     fn = HAYOT_FN;
-    else if (bank.brbMode)  fn = BRB_FN;
-    else if (bank.ipakyuliMode)  fn = GENERIC_EXTENDED_FN;
+    if (bank.hamkorMode)       fn = HAMKOR_FN;
+    else if (bank.tbcMode)     fn = TBC_FN;
+    else if (bank.asakaMode)   fn = ASAKA_FN;
+    else if (bank.hayotMode)   fn = HAYOT_FN;
+    else if (bank.brbMode)     fn = BRB_FN;
+    else if (bank.ipakyuliMode)fn = GENERIC_EXTENDED_FN;
 
     return await page.evaluate(fn);
   } finally {
-    // Timeout bilan majburan yopiladi — leak oldini olish
     try {
       await Promise.race([
         page.close(),
-        new Promise(r => setTimeout(r, 3000)),
+        new Promise(r => setTimeout(r, PAGE_CLOSE_TIMEOUT)),
       ]);
     } catch(_) {}
   }
@@ -1210,12 +1285,11 @@ async function scrapeOneBank(bank) {
 }
 
 // ============================================
-//  ASOSIY SCRAPE — ikki marta ishlamaslik uchun lock
+//  ASOSIY SCRAPE
 // ============================================
 let isRunning = false;
 
 async function scrapeAndSave() {
-  // Oldingi scrape tugamagan bo'lsa, skip
   if (isRunning) {
     console.log('[SCRAPE] ⏳ Oldingi hali tugamagan, skip...');
     return false;
@@ -1226,21 +1300,30 @@ async function scrapeAndSave() {
     const t0 = Date.now();
     const line = '═'.repeat(56);
     console.log(`\n${line}\n[SCRAPE] ${new Date().toLocaleString()}\n${line}`);
+    logMemory();
 
     const results = {};
-
     const fetchBanks = BANKS.filter(b => !b.js);
     const puppBanks  = BANKS.filter(b =>  b.js);
     console.log(`\n[SCRAPE] Fetch:${fetchBanks.length} (parallel) | Puppeteer:${puppBanks.length} (x${BATCH_SIZE})\n`);
 
+    // Fetch banklar — parallel
     (await Promise.all(fetchBanks.map(scrapeOneBank)))
       .forEach(r => { results[r.name] = {buy:r.buy,sell:r.sell,source:r.source}; });
 
+    // Puppeteer banklar — batch + batch orasida pauza
     for (let i=0; i<puppBanks.length; i+=BATCH_SIZE) {
+      if (i > 0 && BATCH_DELAY > 0) {
+        await new Promise(r => setTimeout(r, BATCH_DELAY));
+      }
       const res = await Promise.all(puppBanks.slice(i,i+BATCH_SIZE).map(scrapeOneBank));
       res.forEach(r => { results[r.name] = {buy:r.buy,sell:r.sell,source:r.source}; });
+
+      // Har 5 ta bank dan keyin memory log
+      if (IS_SERVER && (i+BATCH_SIZE) % 5 === 0) logMemory();
     }
 
+    // Validatsiya
     for (const b of BANKS) {
       const r = results[b.name];
       if (!r) continue;
@@ -1292,6 +1375,15 @@ async function scrapeAndSave() {
 
     saveData(currentData);
     console.log(`[SAVE] ✅ Saqlandi! ${elapsed}s\n`);
+
+    // Har N ta scrape dan keyin browser qayta yuk — memory leak oldini olish
+    scrapeCount++;
+    if (IS_SERVER && scrapeCount % BROWSER_RESTART_EVERY === 0) {
+      console.log(`[BROWSER] ♻️  Memory tozalash (${scrapeCount} scrape)...`);
+      await closeBrowser();
+      logMemory();
+    }
+
     return true;
 
   } finally {
@@ -1331,13 +1423,19 @@ app.get('/api/refresh', async (req,res) => {
 
 app.get('/api/health', (req,res) => {
   const age=currentData.lastFetch?Math.round((Date.now()-currentData.lastFetch)/60000):null;
+  const mem=process.memoryUsage();
   res.json({
     status:'ok', today:getDateFormatted(0),
     isRunning,
     successCount:currentData.successCount, fullCount:currentData.fullCount, totalCount:currentData.totalCount,
     dataAge:age!==null?`${age} daqiqa`:"yo'q",
     source:currentData.source, elapsed:currentData.elapsed,
-    config: { IS_SERVER, BATCH_SIZE, CHROME_PATH: CHROME_PATH || 'bundled' },
+    scrapeCount,
+    memory: {
+      rss:  Math.round(mem.rss/1024/1024)+'MB',
+      heap: Math.round(mem.heapUsed/1024/1024)+'/'+Math.round(mem.heapTotal/1024/1024)+'MB',
+    },
+    config: { IS_SERVER, BATCH_SIZE, WAIT_MULT, NAV_TIMEOUT, CHROME_PATH: CHROME_PATH || 'bundled' },
   });
 });
 
@@ -1386,36 +1484,39 @@ app.get('/api/debug/bank/:name', async (req,res) => {
 // ============================================
 app.listen(PORT, async () => {
   console.log('\n╔═════════════════════════════════════════════════════╗');
-  console.log("║  💱 Dollar Kursi v16 — Server Optimized              ║");
+  console.log("║  💱 Dollar Kursi v17 — Server Optimized              ║");
   console.log('╚═════════════════════════════════════════════════════╝');
   console.log(`📡 http://localhost:${PORT}  |  🏦 ${BANKS.length} bank`);
   console.log(`📅 ${getDateFormatted(0)}  |  USD: ${USD_MIN.toLocaleString()}–${USD_MAX.toLocaleString()}`);
   console.log(`⚙️  IS_SERVER=${IS_SERVER} | BATCH=${BATCH_SIZE} | WAIT_MULT=${WAIT_MULT}`);
+  console.log(`⏱️  NAV_TIMEOUT=${NAV_TIMEOUT}ms | FETCH_TIMEOUT=${FETCH_TIMEOUT}ms`);
   console.log(`🌐 CHROME: ${CHROME_PATH || 'bundled (puppeteer default)'}`);
+  console.log(`♻️  Browser restart: har ${BROWSER_RESTART_EVERY} scrape'da`);
   console.log(`⏱️  Interval: ${SCRAPE_INTERVAL/60000} daqiqa`);
   console.log('');
-  console.log('📌 v16 server tuzatishlar:');
-  console.log('   headless: true       — server uchun ishonchli ✅');
-  console.log('   executablePath       — tizimdan Chrome topadi ✅');
-  console.log('   --no-zygote          — server crash oldini olish ✅');
-  console.log('   --single-process     — server RAM tejash ✅');
-  console.log('   BATCH=2 (server)     — parallel limit ✅');
-  console.log('   WAIT_MULT=1.5        — sekin server uchun ✅');
-  console.log('   getBrowser crash-safe — reconnect ✅');
-  console.log('   page.close timeout   — leak oldini olish ✅');
-  console.log('   setInterval lock     — double scrape yo\'q ✅');
+  console.log('📌 v17 server yaxshilanishlari:');
+  console.log('   BATCH=1              — server RAM tejash ✅');
+  console.log('   NAV_TIMEOUT=60s      — sekin serverlar uchun ✅');
+  console.log('   WAIT_MULT=2.0        — JS render vaqti 2x ✅');
+  console.log('   BATCH_DELAY=2s       — RAM siqilmaslik uchun ✅');
+  console.log('   closeBrowser()       — har scrape keyin tozalash ✅');
+  console.log('   disconnected event   — crash auto-detect ✅');
+  console.log('   webdriver=undefined  — bot-detection oldini olish ✅');
+  console.log('   --disable-blink-*    — anti-bot flags ✅');
+  console.log('   doFetch retry x2     — timeout keyin qayta urinish ✅');
+  console.log('   navErr fallback      — domcontentloaded→load ✅');
+  console.log('   /api/health memory   — RAM monitoring ✅');
   console.log('');
   console.log('📌 API:');
   console.log('   /api/banks              — kurslar');
   console.log('   /api/refresh            — qayta yuklash');
-  console.log('   /api/health             — holat + config');
+  console.log('   /api/health             — holat + memory + config');
   console.log('   /api/debug/bank/Hamkor  — HTML + text snippet');
   console.log('');
 
   try { await getBrowser(); } catch(e){ console.warn('[BROWSER] ⚠️', e.message); }
   await scrapeAndSave();
 
-  // Lock bilan interval
   setInterval(async () => {
     if (isRunning) {
       console.log('[INTERVAL] ⏳ Oldingi hali ishlayapti, skip');
@@ -1430,13 +1531,18 @@ app.listen(PORT, async () => {
 // ============================================
 async function shutdown(signal) {
   console.log(`\n[${signal}] To'xtatilmoqda...`);
-  try {
-    if (browser) await browser.close();
-    console.log('[BROWSER] ✅ Yopildi');
-  } catch(_) {}
+  await closeBrowser();
   process.exit(0);
 }
 
 process.on('exit',    () => { try { browser?.close(); } catch(_) {} });
 process.on('SIGINT',  () => shutdown('SIGINT'));
 process.on('SIGTERM', () => shutdown('SIGTERM'));
+
+// Unhandled error — crash bo'lmasin
+process.on('unhandledRejection', (reason) => {
+  console.error('[UNHANDLED]', reason?.message || reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('[UNCAUGHT]', err.message);
+});
